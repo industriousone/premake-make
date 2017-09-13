@@ -1,13 +1,43 @@
-newaction {
-	trigger = "make",
-	shortname = "Make (experimental)",
-	description = "Generate GNU makefiles for POSIX, MinGW, and Cygwin",
+---
+-- make/make.lua
+-- Make exporter module entry point.
+--
+-- Author Jason Perkins
+-- Copyright (c) 2017 Jason Perkins and the Premake project
+---
 
-	onWorkspace = function(wks)
-		print("Generating MAKE workspace")
-	end,
+	local m = {}
 
-	onProject = function(prj)
-		print("Generating MAKE project")
-	end
-}
+	local Query = require("query")
+	local p = premake
+
+	m.workspace = dofile("make_workspace.lua")
+	m.project = dofile("make_project.lua")
+
+
+---
+-- Register the "make" action.
+---
+
+	newaction {
+		trigger = "make",
+		shortname = "Make (experimental)",
+		description = "Experimental next-generation makefile generator",
+
+		onWorkspace = function(wks)
+			wks = Query.new(wks)
+			p.generate(wks, ".make", m.workspace.export)
+		end,
+
+		onProject = function(prj)
+			prj = Query.new(prj)
+			p.generate(prj, ".make", m.project.export)
+		end
+	}
+
+
+---
+-- End of module
+---
+
+	return m

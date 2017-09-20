@@ -8,7 +8,9 @@
 
 	local m = {}
 
+	local Workspace = require("workspace")
 	local Query = require("query")
+
 	local p = premake
 
 	m.workspace = dofile("make_workspace.lua")
@@ -25,7 +27,7 @@
 		description = "Experimental next-generation makefile generator",
 
 		onWorkspace = function(wks)
-			wks = Query.new(wks)
+			wks = Workspace.new(wks)
 			p.generate(wks, ".make", m.workspace.export)
 		end,
 

@@ -13,11 +13,8 @@
 	local m = require("make")
 
 
----
--- Construct a new Query instance from an existing Context.
----
 
-	function suite.looksOkay_onDefaultSetup()
+	function suite.emitsEmptyValue_onNoGroups()
 		m.workspace.projectGroupsVar()
 		test.capture [[
 PROJECT_GROUPS :=

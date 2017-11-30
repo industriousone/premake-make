@@ -6,20 +6,45 @@
 -- Copyright (c) 2017 Jason Perkins and the Premake project
 ---
 
-	local suite = test.declare("make_workspace_projectsVar")
+	local suite = test.declare('make_workspace_projectsVar')
 
-	local p = premake
+	local Model = require('project-model')
 
-	local m = require("make")
+	local m = require('make')
 
 
 ---
--- Construct a new Query instance from an existing Context.
+-- Setup
 ---
 
-	function suite.looksOkay_onDefaultSetup()
-		m.workspace.projectsVar()
+	function suite.setup()
+		workspace('MyWorkspace')
+	end
+
+	local function prepare()
+		local wks = Model.workspace('MyWorkspace')
+		m.workspace.projectsVar(wks)
+	end
+
+
+
+	function suite.emitsEmptyValue_onNoProjects()
+		prepare()
+
 		test.capture [[
 PROJECTS :=
+		]]
+	end
+
+
+
+	function suite.emitsSingleName_onSingleProject()
+		project('Project1')
+		project('Project2')
+
+		prepare()
+
+		test.capture [[
+PROJECTS := Project1 Project2
 		]]
 	end

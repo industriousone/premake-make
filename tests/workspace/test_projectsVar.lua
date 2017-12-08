@@ -32,7 +32,7 @@
 		prepare()
 
 		test.capture [[
-PROJECTS :=
+PROJECTS +=
 		]]
 	end
 
@@ -45,6 +45,6 @@ PROJECTS :=
 		prepare()
 
 		test.capture [[
-PROJECTS := Project1 Project2
+PROJECTS += Project1 Project2
 		]]
 	end

@@ -1,6 +1,7 @@
 return {
 	'test_filename.lua',
 
+	'project/test_defines.lua',
 	'project/test_header.lua',
 
 	'workspace/test_allRule.lua',

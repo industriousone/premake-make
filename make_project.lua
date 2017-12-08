@@ -28,13 +28,35 @@
 
 	m.elements.project = function(wks)
 		return {
-			m.header
+			m.header,
+			m.defines
 		}
 	end
 
 	function m.export(prj)
-		p.callArray(m.elements.project, prj)
+		-- TODO: use configuration to choose the toolset
+		local toolset = premake.tools.gcc
+
+		p.callArray(m.elements.project, prj, toolset)
 	end
+
+
+
+---
+-- Emitter functions for specific makefile sections.
+---
+
+	function m.defines(cfg, toolset)
+		local defines = toolset.getdefines(cfg.defines)
+
+		emit:assignment("DEFINES", defines)
+
+		--p.outln('DEFINES +=' .. gmake2.list(table.join(toolset.getdefines(cfg.defines, cfg), toolset.getundefines(cfg.undefines))))
+
+
+		-- TODO: inherit workspace settings
+	end
+
 
 
 	function m.header()

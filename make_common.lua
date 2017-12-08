@@ -19,7 +19,7 @@
 
 ---
 -- Hardcode a simple GNU Make emitter for now. Trying to see if we can use a single
--- `make` action that can target GNU make, nmake, etc. with an underlying "emitter"
+-- `make` action that can target GNU make, nmake, etc. with an underlying 'emitter'
 -- translating any syntax differences.
 ---
 
@@ -35,20 +35,25 @@
 
 
 	function gmake.assignment(self, variable, value)
-		if type(value) == "table" then
-			value = table.concat(value, " ")
+		local operator
+
+		if type(value) == 'table' then
+			value = table.concat(value, ' ')
+			operator = '+='
+		else
+			operator = ':='
 		end
 
 		if value and #value > 0 then
-			p.w("%s := %s", variable, value)
+			p.w('%s %s %s', variable, operator, value)
 		else
-			p.w("%s :=", variable)
+			p.w('%s %s', variable, operator)
 		end
 	end
 
 
 	function gmake.comment(self, value)
-		p.w("# %s", value)
+		p.w('# %s', value)
 	end
 
 
@@ -58,8 +63,8 @@
 
 ---
 -- Get the makefile file name for a workspace or a project. If this object is the
--- only one writing to a location then I can use "Makefile". If more than one object
--- writes to the same location I use name + ".make" to keep it unique.
+-- only one writing to a location then I can use 'Makefile'. If more than one object
+-- writes to the same location I use name + '.make' to keep it unique.
 --
 -- @param object
 --    The target workspace or project object.
